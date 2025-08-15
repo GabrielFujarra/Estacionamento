@@ -24,7 +24,7 @@ namespace estacionamentoRomano.Models
         public const int precoInicial = 10;
         public const int qtdVagas = 10;
         public const int minutosPermanencia = 1;
-        public const double precoMinuto = 0.20;
+        public const double precoMinuto = 12;
         private List<Carro> carros;
 
         public Estacionamento()
@@ -59,10 +59,10 @@ namespace estacionamentoRomano.Models
             }
 
             Console.WriteLine(string.Format("Tempo:{0}",tempoPermanencia));
-            Console.WriteLine(string.Format("ValorMinuto:{0}",precoMinuto));
+            Console.WriteLine(string.Format("ValorMinuto:{0}",(precoMinuto/60)));
             Console.ReadKey();
-            
-            return precoInicial + (tempoPermanencia * precoMinuto);
+
+            return Math.Round(precoInicial + (tempoPermanencia * (precoMinuto / 60)),2);
             
 
          }
