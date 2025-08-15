@@ -5,11 +5,28 @@ using System.Threading.Tasks;
 
 namespace estacionamentoRomano.Models
 {
+    public class Carro
+    {
+        private string placa;
+        private DateTime entrada;
+        private DateTime saida;
+        private Decimal(8,2) valor;
+
+        public Carro(string placa)
+        {
+            this.placa = placa;
+            this.entrada = Now();
+        }
+    }
+
+
     public class Estacionamento
     {
         private int precoInicial;
         private int precoHora;
         private List<string> Lista = new List<string>();
+
+        private List<Carro> carros = new List<Carro>();
 
         public Estacionamento(int precoInicial, int precoHora)
         {
