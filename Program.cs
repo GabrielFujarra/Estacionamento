@@ -1,23 +1,15 @@
 ﻿using estacionamentoRomano.Models;
 
+Estacionamento es = new Estacionamento();
+
+Console.Clear();
 Console.WriteLine("Bem-vindo ao estacionamento do Mr.Romano!");
-
-Console.Write("Digite o preço inicial: ");
-int precoInicial = int.Parse(Console.ReadLine());
-
-Console.Write("Digite o preco por hora :");
-int precoHora = int.Parse(Console.ReadLine());
-
-Estacionamento es = new Estacionamento(precoInicial, precoHora);
-
-
 
 while (true)
 {
-    Console.Clear();
-    
-    Console.WriteLine("1 - Cadastrar Veículo");
-    Console.WriteLine("2 - Remover Veículo");
+
+    Console.WriteLine("1 - Entrada de Veículo");
+    Console.WriteLine("2 - Saida Veículo");
     Console.WriteLine("3 - Listar Veículos");
     Console.WriteLine("4 - Sair");
     Console.Write("Escolha uma opção: ");
@@ -26,10 +18,10 @@ while (true)
     switch (opcao)
     {
         case 1:
-            es.CadastrarVeiculo();
+            es.EntrarVeiculo();
             break;
         case 2:
-            es.RemoverVeiculo();   
+            es.SaidaVeiculo();
             break;
         case 3:
             es.ListarVeiculos();
@@ -41,4 +33,6 @@ while (true)
             Console.WriteLine("Opção inválida! Tente novamente.");
             break;
     }
+
+    Console.Clear();
 }

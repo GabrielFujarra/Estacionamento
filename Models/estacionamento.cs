@@ -7,75 +7,108 @@ namespace estacionamentoRomano.Models
 {
     public class Carro
     {
-        private string placa;
-        private DateTime entrada;
-        private DateTime saida;
-        private Decimal(8,2) valor;
+        public string placa;
+        public DateTime entrada;
+        public DateTime saida;
 
         public Carro(string placa)
         {
             this.placa = placa;
-            this.entrada = Now();
+            this.entrada = DateTime.Now;
         }
     }
 
 
     public class Estacionamento
     {
-        private int precoInicial;
-        private int precoHora;
-        private List<string> Lista = new List<string>();
+        public const int precoInicial = 10;
+        public const int qtdVagas = 10;
+        public const int minutosPermanencia = 1;
+        public const double precoMinuto = 0.20;
+        private List<Carro> carros;
 
-        private List<Carro> carros = new List<Carro>();
-
-        public Estacionamento(int precoInicial, int precoHora)
+        public Estacionamento()
         {
-            this.precoInicial = precoInicial;
-            this.precoHora = precoHora;
+            this.carros = new List<Carro>();
         }
 
-        public void CadastrarVeiculo()
+        public void EntrarVeiculo()
         {
-
-            Console.WriteLine("Digite a placa do veiculo que deseja cadastrar :");
-            string placa = Console.ReadLine();
-            Lista.Add(placa);
-            Console.WriteLine("Veículo {0} cadastrado com sucesso!", placa);
-            Console.WriteLine("Tota de carros cadastrasdos: {0}", Lista.Count);
-
-            Console.WriteLine("Pressione qualquer tecla para continuar...");
-            Console.ReadKey();
-                
-            
-        }   
-        public int CalcularPreco(int horas)
-        {
-            return precoInicial + precoHora * horas;
-        }
-
-        public void RemoverVeiculo()
-        {
-            Console.WriteLine("Digite a placa do veiculo que deseja remover :");
-            string placaRemover = Console.ReadLine();
-
-            if (Lista.Contains(placaRemover))
+            if (carros.Count >= qtdVagas)
             {
-                Console.Write("Quantas horas o veiculo ficou estacionado : ");
-                int horas = int.Parse(Console.ReadLine());
-
-                Lista.Remove(placaRemover);
-
-                Console.WriteLine("O preco total a pagar é {0} reais", CalcularPreco(horas));
-                Console.WriteLine("Veículo {0} removido com sucesso!", placaRemover);
+                Console.WriteLine("Sem vagas no momento");
             }
-           Console.WriteLine("Pressione qualquer tecla para continuar...");
-           Console.ReadKey();
+            else
+            {
+                Console.Write("Digite a placa do carro : ");
+                var placa = Console.ReadLine();
 
+                carros.Add(new Carro(placa));           
+
+            }
+            
+         }
+
+        public double CalcularPagamento(DateTime entrada)
+        {
+            Double tempoPermanencia = (DateTime.Now - entrada).TotalMinutes;
+            
+            if (tempoPermanencia<=minutosPermanencia)
+            {
+                return 0;
+            }
+
+            Console.WriteLine(string.Format("Tempo:{0}",tempoPermanencia));
+            Console.WriteLine(string.Format("ValorMinuto:{0}",precoMinuto));
+            Console.ReadKey();
+            
+            return precoInicial + (tempoPermanencia * precoMinuto);
+            
+
+         }
+
+        public void SaidaVeiculo()
+        {
+
+            Console.Write("Digite a placa do carro : ");
+            var placa = Console.ReadLine();
+
+            if (carros.Count == 0)
+            {
+                Console.WriteLine("Nao tem carros cadastrados !!");
+                return;
+            }
+
+            for (int i = 0; i < carros.Count; i++)
+            {
+                var c = carros[i];
+                if (c.placa == placa)
+                {
+
+                    var valor = CalcularPagamento(c.entrada);
+
+                    if (valor == 0)
+                    {
+                        Console.WriteLine("liberado sem pagamento ");
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Format("valor a pagar : {0} ", valor));
+                    }
+                    Console.ReadKey();
+                    carros.RemoveAt(i);
+                    return;
+
+                   
+                }
+            }
         }
+        
 
         public void ListarVeiculos()
         {
-            if (Lista.Count == 0)
+            if (carros.Count == 0)
             {
                 Console.WriteLine("Nenhum veículo cadastrado.");
 
@@ -84,17 +117,14 @@ namespace estacionamentoRomano.Models
             {
                 Console.WriteLine("Veiculos cadastrados");
 
-                foreach (var n in Lista)
+                foreach (var n in carros)
                 {
-                    Console.WriteLine(n);
+                    Console.WriteLine(String.Format("Placa:{0} - Entrada:{1}", n.placa, n.entrada));
                 }
             }
-           Console.WriteLine("Pressione qualquer tecla para continuar...");
-           Console.ReadKey();
+            Console.WriteLine("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
         }
-        
-        
 
-        
     }
 }
