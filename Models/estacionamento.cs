@@ -7,7 +7,19 @@ namespace estacionamentoRomano.Models
 {
     public class Carro
     {
-        public string placa;
+        private string _placa;
+        public string placa
+        {
+            get { return _placa; }
+            set
+            {
+                if (value == "")
+                {
+                    throw new ArgumentException("Esse campo nao pode ficar vazio !!");
+                }
+                _placa = value;
+            }
+        }
         public DateTime entrada;
         public DateTime saida;
 
